@@ -6,17 +6,18 @@ import br.edu.inatel.task.model.TaskDAO;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.util.ArrayList;
 
 @Path("/tasks")
 public class TaskService {
 
-    TaskDAO taskDAO = new TaskDAO();
+//    TaskDAO taskDAO = new TaskDAO();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
-        ArrayList<Task> tasks = taskDAO.list();
+        ArrayList<Task> tasks = TaskDAO.getInstance().list();
         return Response
                 .ok()
                 .entity(tasks)
@@ -26,9 +27,8 @@ public class TaskService {
     @GET
     @Path("{taskId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTaskById(@PathParam("taskId") Long taskId) {
-        ArrayList<Task> tasks = taskDAO.list();
-        Task task = tasks.get(tasks.size() - 1);
+    public Response getTaskById(@PathParam("taskId") Long id) {
+        Task task = TaskDAO.getInstance().getById(id);
         return Response
                 .ok()
                 .entity(task)
@@ -36,13 +36,22 @@ public class TaskService {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Task task) {
-        taskDAO.create(task);
+    public Response create(Task task){
+        Task created = TaskDAO.getInstance().create(task);
         return Response
                 .status(201)
-                .entity(task)
+                .entity(created)
+                .build();
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(Task task){
+        Task created = TaskDAO.getInstance().update(task);
+        return Response
+                .ok()
+                .entity(created)
                 .build();
     }
 }
