@@ -12,8 +12,6 @@ import java.util.ArrayList;
 @Path("/tasks")
 public class TaskService {
 
-//    TaskDAO taskDAO = new TaskDAO();
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
@@ -46,12 +44,19 @@ public class TaskService {
     }
 
     @PUT
+	@Path("{taskId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(Task task){
-        Task created = TaskDAO.getInstance().update(task);
-        return Response
+    public Response update(@PathParam("taskId") Long id, Task update){
+		Task task = TaskDAO.getInstance().getById(id);
+		
+		task.setDescription(update.getDescription());
+		task.setDone(update.getDone());
+        
+		TaskDAO.getInstance().update(task);
+        
+		return Response
                 .ok()
-                .entity(created)
+                .entity(task)
                 .build();
     }
 }
