@@ -1,12 +1,7 @@
 package br.edu.inatel.task.model;
 
-import jdk.nashorn.internal.objects.NativeArray;
-
 import java.util.ArrayList;
 
-/**
- * Created by Edgar on 19/09/2015.
- */
 public class TaskDAO {
 
     private ArrayList<Task> tasks;
